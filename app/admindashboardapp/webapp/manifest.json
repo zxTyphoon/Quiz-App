@@ -1,0 +1,183 @@
+{
+    "_version": "1.65.0",
+    "sap.app": {
+        "id": "admindashboardapp",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:lrop",
+            "version": "1.16.2",
+            "toolsId": "ef0ecbb5-4b45-417f-8e7f-1a90eb027256"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/odata/v4/admin-dashboard-srv/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "odataVersion": "4.0"
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.129.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "admindashboardapp.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "config": {},
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "QuizzesList",
+                    "target": "QuizzesList"
+                },
+                {
+                    "pattern": "Quizzes({key}):?query:",
+                    "name": "QuizzesObjectPage",
+                    "target": "QuizzesObjectPage"
+                },
+                {
+                    "pattern": "Quizzes({key})/questions({key2}):?query:",
+                    "name": "QuestionsObjectPage",
+                    "target": "QuestionsObjectPage"
+                }
+            ],
+            "targets": {
+                "QuizzesList": {
+                    "type": "Component",
+                    "id": "QuizzesList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Quizzes",
+                            "variantManagement": "Page",
+                            "initialLoad": "Enabled",
+                            "views": {
+                                "paths": [
+                                    {
+                                        "key": "tab1",
+                                        "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#quizzesTable"
+                                    },
+                                    {
+                                        "key": "tab2",
+                                        "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#questionsTable"
+                                    },
+                                    {
+                                        "key": "tab3",
+                                        "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#answersTable",
+                                        "entitySet": "Answers"
+                                    },
+                                    {
+                                        "key": "tab4",
+                                        "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#usersTable",
+                                        "entitySet": "Users"
+                                    },
+                                    {
+                                        "key": "tab5",
+                                        "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#resultsTable",
+                                        "entitySet": "Results"
+                                    }
+                                ]
+                            },
+                            "navigation": {
+                                "Quizzes": {
+                                    "detail": {
+                                        "route": "QuizzesObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "QuizzesObjectPage": {
+                    "type": "Component",
+                    "id": "QuizzesObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Quizzes",
+                            "navigation": {
+                                "questions": {
+                                    "detail": {
+                                        "route": "QuestionsObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "QuestionsObjectPage": {
+                    "type": "Component",
+                    "id": "QuestionsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Quizzes/questions"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    }
+}
