@@ -55,28 +55,36 @@ annotate adminDashboardSrv.Quizzes with @UI.LineItem #quizzesTable: [
 annotate adminDashboardSrv.Quizzes with @UI.SelectionPresentationVariant #quizzesTable: {
   Text               : 'Quizzes Overview',
   SelectionVariant   : {SelectOptions: []},
-  PresentationVariant: {Visualizations: ['@UI.LineItem#quizzesTable']}
+  PresentationVariant: {
+    Visualizations: ['@UI.LineItem#quizzesTable'],
+    SortOrder     : [{
+      Property  : quizId,
+      Descending: false
+    }]
+  }
 };
 
-annotate adminDashboardSrv.Quizzes with @UI.LineItem #questionsTable: [
+annotate adminDashboardSrv.Questions with @UI.LineItem #questionsTable: [
   {
     $Type: 'UI.DataField',
-    Value: questions.questionId
+    Value: questionId
   },
   {
     $Type: 'UI.DataField',
-    Value: questions.text
-  },
-  {
-    $Type: 'UI.DataField',
-    Value: questions.quizzes.title
+    Value: text
   }
 ];
 
-annotate adminDashboardSrv.Quizzes with @UI.SelectionPresentationVariant #questionsTable: {
+annotate adminDashboardSrv.Questions with @UI.SelectionPresentationVariant #questionsTable: {
   Text               : 'Questions Overview',
   SelectionVariant   : {SelectOptions: []},
-  PresentationVariant: {Visualizations: ['@UI.LineItem#questionsTable']}
+  PresentationVariant: {
+    Visualizations: ['@UI.LineItem#questionsTable'],
+    SortOrder     : [{
+      Property  : questionId,
+      Descending: false
+    }]
+  }
 };
 
 annotate adminDashboardSrv.Quizzes with @UI.FieldGroup #quizDetails: {
@@ -94,7 +102,6 @@ annotate adminDashboardSrv.Quizzes with @UI.FieldGroup #quizDetails: {
   ]
 };
 
-
 annotate adminDashboardSrv.Questions with @UI.LineItem #questionsSection: [
   {
     $Type: 'UI.DataField',
@@ -106,7 +113,6 @@ annotate adminDashboardSrv.Questions with @UI.LineItem #questionsSection: [
   }
 
 ];
-
 
 annotate adminDashboardSrv.Quizzes with @UI.Facets: [{
   $Type : 'UI.CollectionFacet',
@@ -151,13 +157,13 @@ annotate adminDashboardSrv.Questions with {
 
 annotate adminDashboardSrv.Questions with @UI.DataPoint #text: {
   Value: text,
-  Title: 'Text',
+  Title: 'Question',
 };
 
 annotate adminDashboardSrv.Questions with @UI.HeaderFacets: [{
   $Type : 'UI.ReferenceFacet',
   Target: '@UI.DataPoint#text',
-  ID    : 'Text'
+  ID    : 'Question'
 }];
 
 annotate adminDashboardSrv.Questions with @UI.HeaderInfo: {
@@ -174,7 +180,7 @@ annotate adminDashboardSrv.Questions with @UI.Identification: [{Value: questionI
 
 annotate adminDashboardSrv.Questions with {
   questionId @Common.Label: 'Question Id';
-  text       @Common.Label: 'Text';
+  text       @Common.Label: 'Question';
   answers    @Common.Label: 'Answers';
   quizzes    @Common.Label: 'Quiz'
 };
@@ -265,7 +271,7 @@ annotate adminDashboardSrv.Answers with {
 
 annotate adminDashboardSrv.Answers with @UI.DataPoint #text: {
   Value: text,
-  Title: 'Text',
+  Title: 'Question',
 };
 
 annotate adminDashboardSrv.Answers with @UI.DataPoint #isCorrect: {
@@ -278,7 +284,7 @@ annotate adminDashboardSrv.Answers with @UI.HeaderFacets: [
   {
     $Type : 'UI.ReferenceFacet',
     Target: '@UI.DataPoint#text',
-    ID    : 'Text'
+    ID    : 'Question'
   },
   {
     $Type : 'UI.ReferenceFacet',
@@ -301,7 +307,7 @@ annotate adminDashboardSrv.Answers with @UI.Identification: [{Value: answerId}];
 
 annotate adminDashboardSrv.Answers with {
   answerId  @Common.Label: 'Answer Id';
-  text      @Common.Label: 'Text';
+  text      @Common.Label: 'Answer';
   isCorrect @Common.Label: 'Is Correct';
   questions @Common.Label: 'Question'
 };
@@ -353,7 +359,13 @@ annotate adminDashboardSrv.Answers with @UI.LineItem #answersTable: [
 annotate adminDashboardSrv.Answers with @UI.SelectionPresentationVariant #answersTable: {
   Text               : 'Answers Overview',
   SelectionVariant   : {SelectOptions: []},
-  PresentationVariant: {Visualizations: ['@UI.LineItem#answersTable']}
+  PresentationVariant: {
+    Visualizations: ['@UI.LineItem#answersTable'],
+    SortOrder     : [{
+      Property  : answerId,
+      Descending: false
+    }]
+  }
 };
 
 annotate adminDashboardSrv.Answers with @UI.FieldGroup #Main: {
@@ -443,7 +455,13 @@ annotate adminDashboardSrv.Users with @UI.LineItem #usersTable: [
 annotate adminDashboardSrv.Users with @UI.SelectionPresentationVariant #usersTable: {
   Text               : 'Users Overview',
   SelectionVariant   : {SelectOptions: []},
-  PresentationVariant: {Visualizations: ['@UI.LineItem#usersTable']}
+  PresentationVariant: {
+    Visualizations: ['@UI.LineItem#usersTable'],
+    SortOrder     : [{
+      Property  : userId,
+      Descending: false
+    }]
+  }
 };
 
 annotate adminDashboardSrv.Users with @UI.FieldGroup #Main: {
@@ -552,7 +570,13 @@ annotate adminDashboardSrv.Results with @UI.LineItem #resultsTable: [
 annotate adminDashboardSrv.Results with @UI.SelectionPresentationVariant #resultsTable: {
   Text               : 'Results Overview',
   SelectionVariant   : {SelectOptions: []},
-  PresentationVariant: {Visualizations: ['@UI.LineItem#resultsTable']}
+  PresentationVariant: {
+    Visualizations: ['@UI.LineItem#resultsTable'],
+    SortOrder     : [{
+      Property  : resultId,
+      Descending: false
+    }]
+  }
 };
 
 annotate adminDashboardSrv.Results with @UI.FieldGroup #Main: {

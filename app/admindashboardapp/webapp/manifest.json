@@ -117,7 +117,8 @@
                                     },
                                     {
                                         "key": "tab2",
-                                        "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#questionsTable"
+                                        "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#questionsTable",
+                                        "entitySet": "Questions"
                                     },
                                     {
                                         "key": "tab3",
