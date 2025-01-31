@@ -1,39 +1,16 @@
 using {adminDashboardSrv} from '../../srv/service.cds';
 
-annotate adminDashboardSrv.Quizzes with @UI.DataPoint #title: {
-  Value: title,
-  Title: 'Title',
-};
-
-annotate adminDashboardSrv.Quizzes with @UI.HeaderFacets: [{
-  $Type : 'UI.ReferenceFacet',
-  Target: '@UI.DataPoint#title',
-  ID    : 'Title'
-}];
-
 annotate adminDashboardSrv.Quizzes with @UI.HeaderInfo: {
   TypeName      : 'Quiz',
   TypeNamePlural: 'Quizzes',
-  Title         : {Value: quizId}
+  Title         : {Value: title}
 };
 
-annotate adminDashboardSrv.Quizzes with {
-  ID @UI.Hidden
-};
-
-annotate adminDashboardSrv.Quizzes with @UI.Identification: [{Value: quizId}];
+annotate adminDashboardSrv.Quizzes with @UI.Identification: [{Value: title}];
 
 annotate adminDashboardSrv.Quizzes with {
-  quizId    @Common.Label: 'Quiz Id';
-  title     @Common.Label: 'Title';
-  questions @Common.Label: 'Questions'
-};
-
-annotate adminDashboardSrv.Quizzes with {
-  ID @Common.Text: {
-    $value                : quizId,
-    ![@UI.TextArrangement]: #TextOnly
-  };
+  quizId @Common.Label: 'Quiz Id';
+  title  @Common.Label: 'Title'
 };
 
 annotate adminDashboardSrv.Quizzes with @UI.SelectionFields: [
@@ -51,6 +28,10 @@ annotate adminDashboardSrv.Quizzes with @UI.LineItem #quizzesTable: [
     Value: title
   }
 ];
+
+annotate adminDashboardSrv.Quizzes with {
+  ID @UI.Hidden
+};
 
 annotate adminDashboardSrv.Quizzes with @UI.SelectionPresentationVariant #quizzesTable: {
   Text               : 'Quizzes Overview',
@@ -134,49 +115,17 @@ annotate adminDashboardSrv.Quizzes with @UI.Facets: [{
   ]
 }];
 
-annotate adminDashboardSrv.Questions with {
-  quizzes @Common.ValueList: {
-    CollectionPath: 'Quizzes',
-    Parameters    : [
-      {
-        $Type            : 'Common.ValueListParameterInOut',
-        LocalDataProperty: quizzes_ID,
-        ValueListProperty: 'ID'
-      },
-      {
-        $Type            : 'Common.ValueListParameterDisplayOnly',
-        ValueListProperty: 'quizId'
-      },
-      {
-        $Type            : 'Common.ValueListParameterDisplayOnly',
-        ValueListProperty: 'title'
-      },
-    ],
-  }
-};
-
-annotate adminDashboardSrv.Questions with @UI.DataPoint #text: {
-  Value: text,
-  Title: 'Question',
-};
-
-annotate adminDashboardSrv.Questions with @UI.HeaderFacets: [{
-  $Type : 'UI.ReferenceFacet',
-  Target: '@UI.DataPoint#text',
-  ID    : 'Question'
-}];
-
 annotate adminDashboardSrv.Questions with @UI.HeaderInfo: {
   TypeName      : 'Question',
   TypeNamePlural: 'Questions',
-  Title         : {Value: questionId}
+  Title         : {Value: text}
 };
 
 annotate adminDashboardSrv.Questions with {
   ID @UI.Hidden
 };
 
-annotate adminDashboardSrv.Questions with @UI.Identification: [{Value: questionId}];
+annotate adminDashboardSrv.Questions with @UI.Identification: [{Value: text}];
 
 annotate adminDashboardSrv.Questions with {
   questionId @Common.Label: 'Question Id';
@@ -201,10 +150,6 @@ annotate adminDashboardSrv.Questions with @UI.SelectionFields: [quizzes_ID];
 annotate adminDashboardSrv.Questions with @UI.LineItem: [
   {
     $Type: 'UI.DataField',
-    Value: ID
-  },
-  {
-    $Type: 'UI.DataField',
     Value: questionId
   },
   {
@@ -218,7 +163,6 @@ annotate adminDashboardSrv.Questions with @UI.LineItem: [
   }
 ];
 
-
 annotate adminDashboardSrv.Answers with @UI.LineItem #answersSection: [
   {
     $Type: 'UI.DataField',
@@ -226,48 +170,49 @@ annotate adminDashboardSrv.Answers with @UI.LineItem #answersSection: [
   },
   {
     $Type: 'UI.DataField',
-    Value: text
+    Value: text,
+    
   },
   {
     $Type      : 'UI.DataField',
     Value      : isCorrect_code,
     Criticality: isCorrect.criticality
   }
-
 ];
 
+annotate adminDashboardSrv.Questions with @UI.FieldGroup #questionDetails: {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {
+      $Type: 'UI.DataField',
+      Value: questionId
+    },
+    {
+      $Type: 'UI.DataField',
+      Value: text
+    }
+  ]
+};
 
 annotate adminDashboardSrv.Questions with @UI.Facets: [{
   $Type : 'UI.CollectionFacet',
-  ID    : 'questionsAndAnswersTab',
-  Facets: [{
-    $Type : 'UI.ReferenceFacet',
-    ID    : 'answersSection',
-    Label : 'Answers',
-    Target: 'answers/@UI.LineItem#answersSection'
-  }]
+  ID    : 'questionInfoTab',
+  Label : 'Question Information',
+  Facets: [
+    {
+      $Type : 'UI.ReferenceFacet',
+      ID    : 'quizDetails',
+      Label : 'Quiz Details',
+      Target: '@UI.FieldGroup#questionDetails'
+    },
+    {
+      $Type : 'UI.ReferenceFacet',
+      ID    : 'answersSection',
+      Label : 'Answers',
+      Target: 'answers/@UI.LineItem#answersSection'
+    }
+  ]
 }];
-
-annotate adminDashboardSrv.Answers with {
-  questions @Common.ValueList: {
-    CollectionPath: 'Questions',
-    Parameters    : [
-      {
-        $Type            : 'Common.ValueListParameterInOut',
-        LocalDataProperty: questions_ID,
-        ValueListProperty: 'ID'
-      },
-      {
-        $Type            : 'Common.ValueListParameterDisplayOnly',
-        ValueListProperty: 'questionId'
-      },
-      {
-        $Type            : 'Common.ValueListParameterDisplayOnly',
-        ValueListProperty: 'text'
-      },
-    ],
-  }
-};
 
 annotate adminDashboardSrv.Answers with @UI.DataPoint #text: {
   Value: text,
@@ -608,3 +553,9 @@ annotate adminDashboardSrv.Results with @UI.Facets: [{
   Label : 'General Information',
   Target: '@UI.FieldGroup#Main'
 }];
+
+annotate adminDashboardSrv.Quizzes with @odata.draft.enabled;
+annotate adminDashboardSrv.Questions with @odata.draft.enabled;
+annotate adminDashboardSrv.Answers with @odata.draft.enabled;
+annotate adminDashboardSrv.Users with @odata.draft.enabled;
+annotate adminDashboardSrv.Results with @odata.draft.enabled;
